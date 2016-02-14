@@ -21,10 +21,10 @@ If you're not already familiar with [generate][], you might find generate's [get
 Extend your generator with features and settings from generate-collections:
 
 ```js
-var readme = require('generate-collections');
+var collections = require('generate-collections');
 
 module.exports = function(app) {
-  readme.invoke(app, [options]);
+  collections.invoke(app, [options]);
 
   // do generator stuff
 };
@@ -44,9 +44,9 @@ module.exports = function(app) {
 
   // do generator stuff
 
-  // you must run the `readme task before you use 
+  // you must run the `collections task before you use 
   // any of the features from generate-collections
-  app.task('default', ['readme', ])
+  app.task('default', ['collections', ])
 };
 ```
 
