@@ -1,6 +1,6 @@
 {
   "name": "generate-collections",
-  "description": "Use this generator to add some common default settings to your 'generate', verb, and assemble generators.",
+  "description": "Add the docs, includes, badges, and layouts collections, along with a few generic defaults to your generator.",
   "version": "0.1.0",
   "homepage": "https://github.com/jonschlinkert/generate-collections",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
@@ -50,7 +50,7 @@
         "generate",
         "verb"
       ],
-      "highlight": "generate"
+      "highlight": "generate-defaults"
     },
     "layout": "default",
     "tasks": [
