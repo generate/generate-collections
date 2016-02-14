@@ -37,9 +37,9 @@ module.exports = function(app) {
  * @api public
  */
 
-function task(app) {
+function task(app, opts) {
   return function(cb) {
-    collections(app);
+    collections(app, opts);
     cb();
   };
 }
@@ -74,9 +74,7 @@ function collections(app, options) {
   // create collections defined on the options
   if (utils.isObject(opts.create)) {
     for (var key in opts.create) {
-      if (opts.create.hasOwnProperty(key)) {
-        app.create(key, opts.create[key]);
-      }
+      app.create(key, opts.create[key]);
     }
   }
 };
