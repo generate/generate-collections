@@ -71,6 +71,15 @@ function collections(app, options) {
   // "noop" layout
   app.layout('empty', {content: '{% body %}'});
 
+  // use an empty layout to unsure that all pre-and
+  // post-layout middleware are still triggered
+  app.preLayout(/\.md/, function(view, next) {
+    if (view.isType('renderable') && !view.layout) {
+      view.layout = 'empty';
+    }
+    next();
+  });
+
   // create collections defined on the options
   if (utils.isObject(opts.create)) {
     for (var key in opts.create) {

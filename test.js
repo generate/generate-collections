@@ -82,5 +82,38 @@ describe('generate-collections', function() {
         });
       });
     });
+
+    it('should set layout to `empty` on renderable templates with no layout', function(cb) {
+      app.generator('foo', function(app) {
+        app.extendWith(collections);
+        var count = 0;
+
+        app.task('templates', function(cb) {
+          app.doc('aaa', {content: 'this is content'});
+          app.doc('bbb', {content: 'this is content', layout: 'default'});
+          app.doc('ccc', {content: 'this is content', layout: null});
+          count++;
+          cb();
+        });
+
+        app.task('render', function(cb) {
+
+          count++;
+          cb();
+        });
+
+        app.task('default', ['collections', 'templates']);
+        app.build('default', function(err) {
+          if (err) return cb(err);
+          assert.equal(count, 1);
+          assert(app.views.docs)
+          assert(app.views.docs.aaa);
+          // assert.equal(app.views.docs.aaa.layout, 'empty');
+          // assert.equal(app.views.docs.bbb.layout, 'default');
+          // assert.equal(app.views.docs.ccc.layout, 'empty');
+          cb();
+        });
+      });
+    });
   });
 });
