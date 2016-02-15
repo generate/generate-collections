@@ -14,7 +14,7 @@ $ npm i generate-collections --save
 
 **getting started**
 
-If you're not already familiar with [generate][], you might find generate's [getting started guide](https://github.com/generate/generate/blob/master/docs/getting-started.md) useful before continuining.
+If you're not already familiar with [generate](https://github.com/generate/generate), you might find generate's [getting started guide](https://github.com/generate/generate/blob/master/docs/getting-started.md) useful before continuining.
 
 ## Usage
 
@@ -105,7 +105,7 @@ collections.invoke(app, [options]);
 
 This generator works with:
 
-* [generate][]
+* [generate](https://github.com/generate/generate)
 * [verb](https://github.com/verbose/verb)
 * update (soon)
 * assemble (soon)
