@@ -19,10 +19,10 @@ var utils = require('./utils');
  * @api public
  */
 
-module.exports = function(app) {
-  app.task('collections', { silent: true }, task(app));
+function generator(app, base) {
+  app.task('collections', { silent: true }, task(app, base.options));
   app.task('default', ['collections']);
-};
+}
 
 /**
  * Exposes the `collections` task function directly, so you can register
@@ -39,7 +39,7 @@ module.exports = function(app) {
 
 function task(app, opts) {
   return function(cb) {
-    collections(app, opts);
+    invoke(app, opts);
     cb();
   };
 }
@@ -60,7 +60,7 @@ function task(app, opts) {
  * @api public
  */
 
-function collections(app, options) {
+function invoke(app, options) {
   var opts = utils.extend({}, app.options, options);
 
   app.create('docs', { viewType: 'partial' });
@@ -86,11 +86,12 @@ function collections(app, options) {
       app.create(key, opts.create[key]);
     }
   }
-};
+}
 
 /**
  * Expose collections on the `load` property and as a task.
  */
 
-module.exports.invoke = collections;
-module.exports.task = task;
+generator.invoke = invoke;
+generator.task = task;
+module.exports = generator;
