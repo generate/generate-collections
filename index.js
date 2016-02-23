@@ -64,6 +64,7 @@ function task(app, opts) {
 function invoke(app, options) {
   var opts = utils.extend({}, app.options, options);
 
+  // add defaul collections
   app.create('docs', { viewType: 'partial' });
   app.create('badges', { viewType: 'partial' });
   app.create('includes', { viewType: 'partial' });
