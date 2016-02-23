@@ -9,7 +9,7 @@ var utils = require('./utils');
  *
  * If a collection does already exist on the instance, its options will
  * be updated with any options defined on your application instance,
- * or options passed directly to the [load](#load) function.
+ * or options passed directly to the [invoke](#invoke) function.
  *
  * In your generator:
  *
@@ -64,7 +64,10 @@ function task(app, opts) {
 function invoke(app, options) {
   var opts = utils.extend({}, app.options, options);
 
-  // add defaul collections
+  // add middleware
+  middleware(app);
+
+  // add default view collections
   app.create('docs', { viewType: 'partial' });
   app.create('badges', { viewType: 'partial' });
   app.create('includes', { viewType: 'partial' });
@@ -72,19 +75,6 @@ function invoke(app, options) {
 
   // "noop" layout
   app.layout('empty', {content: '{% body %}'});
-
-  // use an empty layout to unsure that all pre-and
-  // post-layout middleware are still triggered
-  app.preLayout(/\.md/, function(view, next) {
-    if (falsey(view.layout) && view.isType('renderable')) {
-      view.layout = 'empty';
-    }
-    if (view.isType('partial') || view.isType('layout') && view.layout === 'default') {
-      view.layout = 'empty';
-      view.options.layout = null;
-    }
-    next();
-  });
 
   // create collections defined on the options
   if (utils.isObject(opts.create)) {
@@ -99,9 +89,34 @@ function invoke(app, options) {
 }
 
 /**
- * Expose collections on the `load` property and as a task.
+ * Middleware for collections created by this generator
+ */
+
+function middleware(app) {
+  // use an empty layout to unsure that all pre-and
+  // post-layout middleware are still triggered
+  app.preLayout(/\.md/, function(view, next) {
+    if (falsey(view.layout) && view.isType('renderable')) {
+      view.layout = 'empty';
+    }
+    if (view.isType('partial') || view.isType('layout') && view.layout === 'default') {
+      view.layout = 'empty';
+      view.options.layout = null;
+    }
+    next();
+  });
+}
+
+/**
+ * Expose collections on the `invoke` property and as a task to
+ * support lazy invocation
  */
 
 generator.invoke = invoke;
 generator.task = task;
+
+/**
+ * Expose `generator`
+ */
+
 module.exports = generator;
