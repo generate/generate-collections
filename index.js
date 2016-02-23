@@ -1,5 +1,6 @@
 'use strict';
 
+var falsey = require('falsey');
 var utils = require('./utils');
 
 /**
@@ -74,8 +75,12 @@ function invoke(app, options) {
   // use an empty layout to unsure that all pre-and
   // post-layout middleware are still triggered
   app.preLayout(/\.md/, function(view, next) {
-    if (view.isType('renderable') && !view.layout) {
+    if (falsey(view.layout) && view.isType('renderable')) {
       view.layout = 'empty';
+    }
+    if (view.isType('partial') || view.isType('layout') && view.layout === 'default') {
+      view.layout = 'empty';
+      view.options.layout = null;
     }
     next();
   });
@@ -83,7 +88,11 @@ function invoke(app, options) {
   // create collections defined on the options
   if (utils.isObject(opts.create)) {
     for (var key in opts.create) {
-      app.create(key, opts.create[key]);
+      if (!app[key]) {
+        app.create(key, opts.create[key]);
+      } else {
+        app[key].option(opts.create[key]);
+      }
     }
   }
 }
