@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "extend-shallow": "^2.0.1",
+    "falsey": "^0.3.0",
     "isobject": "^2.0.0",
     "lazy-cache": "^1.0.3"
   },
@@ -44,6 +45,15 @@
     "verbgenerator"
   ],
   "verb": {
+    "run": true,
+    "toc": false,
+    "layout": "default-dev",
+    "tasks": [
+      "readme"
+    ],
+    "plugins": [
+      "gulp-format-md"
+    ],
     "related": {
       "list": [
         "assemble",
@@ -52,18 +62,14 @@
       ],
       "highlight": "generate-defaults"
     },
-    "layout": "default",
-    "tasks": [
-      "readme"
-    ],
-    "plugins": [
-      "gulp-format-md"
-    ],
     "reflinks": [
       "assemble",
       "common-middleware",
       "generate",
       "verb"
-    ]
+    ],
+    "lint": {
+      "reflinks": true
+    }
   }
 }
