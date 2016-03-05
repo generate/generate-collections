@@ -68,7 +68,7 @@ function invoke(app, options) {
   middleware(app);
 
   // add default view collections
-  app.create('docs', { viewType: 'partial' });
+  app.create('docs', { viewType: ['partial', 'renderable'] });
   app.create('badges', { viewType: 'partial' });
   app.create('includes', { viewType: 'partial' });
   app.create('layouts', { viewType: 'layout' });
