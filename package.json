@@ -1,7 +1,7 @@
 {
   "name": "generate-collections",
   "description": "Add the docs, includes, badges, and layouts collections, along with a few generic defaults to your generator.",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "homepage": "https://github.com/jonschlinkert/generate-collections",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "jonschlinkert/generate-collections",
