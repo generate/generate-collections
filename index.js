@@ -68,7 +68,7 @@ function invoke(app, options) {
   middleware(app);
 
   // add default view collections
-  app.create('docs', { viewType: ['partial', 'renderable'] });
+  app.create('docs', { viewType: 'partial' });
   app.create('badges', { viewType: 'partial' });
   app.create('includes', { viewType: 'partial' });
   app.create('layouts', { viewType: 'layout' });
@@ -96,12 +96,19 @@ function middleware(app) {
   // use an empty layout to unsure that all pre-and
   // post-layout middleware are still triggered
   app.preLayout(/\.md/, function(view, next) {
-    if (falsey(view.layout) && view.isType('renderable')) {
-      view.layout = 'empty';
+    if (falsey(view.layout) && !view.isType('partial')) {
+      view.layout = app.resolveLayout(view) || 'empty';
+      next();
+      return;
     }
-    if (view.isType('partial') || view.isType('layout') && view.layout === 'default') {
-      view.layout = 'empty';
+
+    if (view.isType('partial')) {
       view.options.layout = null;
+      view.data.layout = null;
+      view.layout = null;
+      if (typeof view.partialLayout === 'string') {
+        view.layout = view.partialLayout;
+      }
     }
     next();
   });
