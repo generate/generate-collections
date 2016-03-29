@@ -1,7 +1,6 @@
 'use strict';
 
 var falsey = require('falsey');
-var extend = require('extend-shallow');
 var isObject = require('isobject');
 
 /**
@@ -76,7 +75,7 @@ function collections(options) {
     // pass the plugin to sub-generators
     return plugin;
   };
-};
+}
 
 /**
  * Validate instance
@@ -86,7 +85,7 @@ function isValidInstance(app) {
   if (!app.isApp) {
     return false;
   }
-  if (app.isRegistered('verb-collections')) {
+  if (app.isRegistered('generate-collections')) {
     return false;
   }
   return true;
