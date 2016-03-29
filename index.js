@@ -7,7 +7,7 @@ var isObject = require('isobject');
  * Register the plugin.
  *
  * ```js
- * var collections = require('verb-collections');
+ * var collections = require('generate-collections');
  *
  * // in your generator
  * this.use(collections());
