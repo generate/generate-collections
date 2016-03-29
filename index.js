@@ -1,129 +1,106 @@
 'use strict';
 
 var falsey = require('falsey');
-var utils = require('./utils');
+var extend = require('extend-shallow');
+var isObject = require('isobject');
 
 /**
- * When invoked, this creates three view collections, `layouts`, `docs`
- * and `includes`, but only if they're not already on the instance.
- *
- * If a collection does already exist on the instance, its options will
- * be updated with any options defined on your application instance,
- * or options passed directly to the [invoke](#invoke) function.
- *
- * In your generator:
+ * Register the plugin.
  *
  * ```js
- * app.extendWith(require('generate-collections'));
- * ```
- * @param {Object} `app` instance of generator, verb or assemble.
- * @api public
- */
-
-function generator(app, base) {
-  app.task('collections', { silent: true }, task(app, base.options));
-  app.task('default', ['collections']);
-}
-
-/**
- * Exposes the `collections` task function directly, so you can register
- * the task with any name that makes sense for your project.
- *
- * ```js
- * var collections = require('generate-collections');
- * app.task('foo', collections.task(app));
- * ```
- * @param {Object} `app`
- * @return {Function} Returns the task callback
- * @api public
- */
-
-function task(app, opts) {
-  return function(cb) {
-    invoke(app, opts);
-    cb();
-  };
-}
-
-/**
- * Exposes the generator on the `invoke` property, allowing you to load
- * the collections wherever and whenever it makes sense.
- *
- * ```js
- * var collections = require('generate-collections');
+ * var collections = require('verb-collections');
  *
  * // in your generator
- * collections.invoke(app, [options]);
+ * this.use(collections());
  * ```
- * @name .invoke
- * @param {Object} `app`
- * @param {Object} `options`
  * @api public
  */
 
-function invoke(app, options) {
-  var opts = utils.extend({}, app.options, options);
+function collections(options) {
+  options = options || {};
 
-  // add middleware
-  middleware(app);
+  return function plugin(app, base) {
+    if (!isValidInstance(app)) return;
 
-  // add default view collections
-  app.create('docs', { viewType: 'partial' });
-  app.create('badges', { viewType: 'partial' });
-  app.create('includes', { viewType: 'partial' });
-  app.create('layouts', { viewType: 'layout' });
+    this.option(base.options);
+    this.option(options);
 
-  // "noop" layout
-  app.layout('empty', {content: '{% body %}'});
+    /**
+     * Middleware for collections created by this generator
+     */
 
-  // create collections defined on the options
-  if (utils.isObject(opts.create)) {
-    for (var key in opts.create) {
-      if (!app[key]) {
-        app.create(key, opts.create[key]);
-      } else {
-        app[key].option(opts.create[key]);
+    this.preLayout(/\.md/, function(view, next) {
+      if (falsey(view.layout) && !view.isType('partial')) {
+        // use the empty layout created above, to ensure that all
+        // pre-and post-layout middleware are still triggered
+        view.layout = app.resolveLayout(view) || 'empty';
+        next();
+        return;
       }
-    }
-  }
-}
 
-/**
- * Middleware for collections created by this generator
- */
-
-function middleware(app) {
-  // use an empty layout to unsure that all pre-and
-  // post-layout middleware are still triggered
-  app.preLayout(/\.md/, function(view, next) {
-    if (falsey(view.layout) && !view.isType('partial')) {
-      view.layout = app.resolveLayout(view) || 'empty';
+      if (view.isType('partial')) {
+        view.options.layout = null;
+        view.data.layout = null;
+        view.layout = null;
+        if (typeof view.partialLayout === 'string') {
+          view.layout = view.partialLayout;
+        }
+      }
       next();
-      return;
+    });
+
+    // add default view collections
+    this.create('files', { viewType: 'renderable'});
+    this.create('includes', { viewType: 'partial' });
+    this.create('layouts', { viewType: 'layout' });
+
+    // generator-specific collections
+    if (this.isGenerator) {
+      this.create('templates', { viewType: 'renderable' });
     }
 
-    if (view.isType('partial')) {
-      view.options.layout = null;
-      view.data.layout = null;
-      view.layout = null;
-      if (typeof view.partialLayout === 'string') {
-        view.layout = view.partialLayout;
+    // "noop" layout
+    this.layout('empty', {content: '{% body %}'});
+
+    // create collections defined on the options
+    if (isObject(this.options.create)) {
+      for (var key in this.options.create) {
+        if (!this[key]) {
+          this.create(key, this.options.create[key]);
+        } else {
+          this[key].option(this.options.create[key]);
+        }
       }
     }
-    next();
-  });
+
+    // pass the plugin to sub-generators
+    return plugin;
+  };
+};
+
+/**
+ * Validate instance
+ */
+
+function isValidInstance(app) {
+  if (!app.isApp) {
+    return false;
+  }
+  if (app.isRegistered('verb-collections')) {
+    return false;
+  }
+  return true;
 }
 
 /**
- * Expose collections on the `invoke` property and as a task to
- * support lazy invocation
+ * Expose `plugin` function so that verb-collections
+ * can be run as a global generator
  */
 
-generator.invoke = invoke;
-generator.task = task;
+module.exports = collections();
 
 /**
- * Expose `generator`
+ * Expose `collection` function so that options can be passed
  */
 
-module.exports = generator;
+module.exports.create = collections;
