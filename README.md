@@ -1,4 +1,4 @@
-# generate-collections [![NPM version](https://img.shields.io/npm/v/generate-collections.svg)](https://www.npmjs.com/package/generate-collections) [![Build Status](https://img.shields.io/travis/jonschlinkert/generate-collections.svg)](https://travis-ci.org/jonschlinkert/generate-collections)
+# generate-collections [![NPM version](https://img.shields.io/npm/v/generate-collections.svg?style=flat)](https://www.npmjs.com/package/generate-collections) [![NPM downloads](https://img.shields.io/npm/dm/generate-collections.svg?style=flat)](https://npmjs.org/package/generate-collections) [![Build Status](https://img.shields.io/travis/jonschlinkert/generate-collections.svg?style=flat)](https://travis-ci.org/jonschlinkert/generate-collections)
 
 > Add the docs, includes, badges, and layouts collections, along with a few generic defaults to your generator.
 
@@ -12,91 +12,61 @@ Install as a `devDependency` with [npm](https://www.npmjs.com/):
 $ npm install generate-collections --save-dev
 ```
 
-## Quickstart
-
-**Getting started**
-
-If you're not already familiar with [generate](https://github.com/generate/generate), you might find generate's [getting started guide](https://github.com/generate/generate/blob/master/docs/getting-started.md) useful before continuining.
-
-<br>
-
-***
-
 ## Usage
 
-With both `generate-collections` and `generate` installed globally, you should now be able to run this generator's default task with the following command:
+This plugin can be used with:
 
-```sh
-$ gen collections
-```
+* [generate](https://github.com/generate/generate): in your local `generator.js` file or globally installed [generate](https://github.com/generate/generate) generator.
+* [assemble](https://github.com/assemble/assemble): in your local `assemblefile.js` file or globally installed [assemble](https://github.com/assemble/assemble) generator.
+* [update](https://github.com/update/update): in your local `updatefile.js` file or globally installed [update](https://github.com/update/update) generator.
+* [verb](https://github.com/verbose/verb): in your local `verbfile.js` file or globally installed [verb](https://github.com/verbose/verb) generator.
 
-If the generator and its task completed successfuly, you should see something like this in the terminal:
-
-```sh
-[00:44:21] starting collections generator
-[00:44:21] starting collections:default task
-[00:44:22] finished collections:default task 63ms
-[00:44:22] finished collections generator 68ms
-[00:44:22] finished ✔
-```
-
-## Extend your generator
-
-The [usage instructions](#usage) explain how to use this as a standalone generator, but you can also use `generate-collections` to extend your own generator, and cut down on boilerplate code needed to get up and running.
-
-To extend your generator, add the  `.extendWith()` line inside your generator:
+**generator example**
 
 ```js
-var collections = require('generate-collections');
-
-module.exports = function(app) {
-  collections.invoke(app[, options]);
-
-  // do generator stuff
+module.exports = function(argument) {
+  app.use(require('generate-collections'));
+  // do stuff with collections
 };
 ```
 
-That's it! you should now be able to use any features from `generate-collections` as if they were created in your own generator.
-
-**Override settings**
-
-You can override any feature or setting from `generate-collections` by defining new values. E.g. we aren't doing any magic, the `.invoke` method just calls this generator in the context of your generator's instance.
-
-## Advanced usage
-
-**Lazily-extend your generator**
-
-Run the `collections` task to lazily add the features and settings from `generate-collections`.
-
-This approach offers the advantage of choosing when and where to invoke `generate-collections` inside your own generator.
+**verbfile.js example**
 
 ```js
-module.exports = function(app) {
-  app.extendWith(require('generate-collections'));
+var verb = require('verb');
+var app = verb();
 
-  app.task('foo', function(cb) {
-    // do task stuff
-    cb();
-  });
-
-  app.task('default', ['collections', 'foo']);
-};
+// register the plugin
+app.use(require('generate-collections'));
 ```
 
-**Note that** _before running task `foo`, you MUST RUN the `collections` task_ to get the features from `generate-collections` loaded onto your generator's instance.
+## Included collections
 
-## API
+Adds the following view collections to your verb app:
 
-## Compatibility
+**Renderable**
 
-This generator works with:
+Templates in these collections can be (automatically) rendered:
 
-* [generate](https://github.com/generate/generate)
-* [verb](https://github.com/verbose/verb)
-* update (soon)
-* assemble (soon)
+* `files`
+
+**Layouts**
+
+Templates in these collections can be used as layouts:
+
+* `layouts`
+
+**Partials**
+
+Templates in these collections can be used as partials:
+
+* `includes`
+* `badges`
+* `docs`
 
 ## Related projects
+
+You might also be interested in these projects:
 
 * [assemble](https://www.npmjs.com/package/assemble): Assemble is a powerful, extendable and easy to use static site generator for node.js. Used… [more](https://www.npmjs.com/package/assemble) | [homepage](https://github.com/assemble/assemble)
 * [generate](https://www.npmjs.com/package/generate): Fast, composable, highly extendable project generator with a user-friendly and expressive API. | [homepage](https://github.com/generate/generate)
@@ -137,9 +107,9 @@ $ npm install -d && npm test
 
 ## License
 
-Copyright © 2016 [Jon Schlinkert](https://github.com/jonschlinkert)
+Copyright © 2016, [Jon Schlinkert](https://github.com/jonschlinkert).
 Released under the [MIT license](https://github.com/jonschlinkert/generate-collections/blob/master/LICENSE).
 
 ***
 
-_This file was generated by [verb](https://github.com/verbose/verb), v0.9.0, on March 06, 2016._
+_This file was generated by [verb](https://github.com/verbose/verb), v, on March 29, 2016._
