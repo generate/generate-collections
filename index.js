@@ -32,7 +32,10 @@ function collections(options) {
       if (falsey(view.layout) && !view.isType('partial')) {
         // use the empty layout created above, to ensure that all
         // pre-and post-layout middleware are still triggered
-        view.layout = app.resolveLayout(view) || 'empty';
+        view.layout = app.resolveLayout(view);
+        if (falsey(view.layout)) {
+          view.layout = 'empty';
+        }
         next();
         return;
       }
