@@ -1,6 +1,7 @@
 'use strict';
 
 var falsey = require('falsey');
+var isValid = require('is-valid-app');
 var isObject = require('isobject');
 
 /**
@@ -15,14 +16,18 @@ var isObject = require('isobject');
  * @api public
  */
 
-function collections(options) {
-  options = options || {};
+function collections(config) {
+  config = config || {};
 
   return function plugin(app, base) {
-    if (!isValidInstance(app)) return;
+    if (!isValid(app, 'generate-collections')) return;
+
+    /**
+     * Options
+     */
 
     this.option(base.options);
-    this.option(options);
+    this.option(config);
 
     /**
      * Middleware for collections created by this generator
@@ -78,20 +83,6 @@ function collections(options) {
     // pass the plugin to sub-generators
     return plugin;
   };
-}
-
-/**
- * Validate instance
- */
-
-function isValidInstance(app) {
-  if (!app.isApp) {
-    return false;
-  }
-  if (app.isRegistered('generate-collections')) {
-    return false;
-  }
-  return true;
 }
 
 /**
