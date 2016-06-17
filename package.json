@@ -2,16 +2,15 @@
   "name": "generate-collections",
   "description": "Add the docs, includes, badges, and layouts collections, along with a few generic defaults to your generator.",
   "version": "0.2.1",
-  "homepage": "https://github.com/jonschlinkert/generate-collections",
+  "homepage": "https://github.com/generate/generate-collections",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
-  "repository": "jonschlinkert/generate-collections",
+  "repository": "generate/generate-collections",
   "bugs": {
     "url": "https://github.com/jonschlinkert/generate-collections/issues"
   },
   "license": "MIT",
   "files": [
-    "index.js",
-    "utils.js"
+    "index.js"
   ],
   "main": "index.js",
   "engines": {
@@ -22,6 +21,7 @@
   },
   "dependencies": {
     "falsey": "^0.3.0",
+    "is-valid-app": "^0.1.1",
     "isobject": "^2.0.0"
   },
   "devDependencies": {
@@ -35,8 +35,11 @@
     "mocha": "^2.4.5"
   },
   "keywords": [
+    "collections",
     "generate",
+    "generateplugin",
     "generator",
+    "plugin",
     "template",
     "templates",
     "verb",
@@ -55,18 +58,20 @@
     ],
     "related": {
       "list": [
-        "assemble",
-        "generate",
-        "verb"
+        "generate-license",
+        "generate-mocha",
+        "generate-node"
       ],
-      "highlight": "generate-defaults"
+      "highlight": "generate-file"
     },
     "reflinks": [
       "assemble",
       "common-middleware",
       "generate",
+      "update",
       "verb",
-      "update"
+      "verb-readme-generator",
+      "base"
     ],
     "lint": {
       "reflinks": true
