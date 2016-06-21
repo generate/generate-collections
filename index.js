@@ -73,20 +73,12 @@ function collections(config) {
     var regex = app.options.templatePathRegex || /./;
     app.templates.preWrite(regex, utils.renameFile(app));
     app.templates.onLoad(regex, function(view, next) {
-      utils.parser.parse(view, function(err) {
-        if (err) {
-          next(err);
-          return;
-        }
-        var userDefined = app.home('templates', view.basename);
-        if (utils.exists(userDefined) && !view.userDefined === false) {
-          view.contents = fs.readFileSync(userDefined);
-        }
-
-        // strip prefixes from dotfile and config templates
-        utils.stripPrefixes(view);
-        next();
-      });
+      var userDefined = app.home('templates', view.basename);
+      if (utils.exists(userDefined)) {
+        view.contents = fs.readFileSync(userDefined);
+      }
+      utils.stripPrefixes(view);
+      utils.parser.parse(view, next);
     });
 
     // "noop" layout
