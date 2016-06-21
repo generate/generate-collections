@@ -10,6 +10,7 @@ require = utils;
  */
 
 require('falsey');
+require('extend-shallow', 'extend');
 require('fs-exists-sync', 'exists');
 require('is-valid-app', 'isValid');
 require('isobject', 'isObject');
