@@ -1,93 +1,95 @@
-# generate-collections [![NPM version](https://img.shields.io/npm/v/generate-collections.svg?style=flat)](https://www.npmjs.com/package/generate-collections) [![NPM downloads](https://img.shields.io/npm/dm/generate-collections.svg?style=flat)](https://npmjs.org/package/generate-collections) [![Build Status](https://img.shields.io/travis/jonschlinkert/generate-collections.svg?style=flat)](https://travis-ci.org/jonschlinkert/generate-collections)
+# generate-collections [![NPM version](https://img.shields.io/npm/v/generate-collections.svg?style=flat)](https://www.npmjs.com/package/generate-collections) [![NPM downloads](https://img.shields.io/npm/dm/generate-collections.svg?style=flat)](https://npmjs.org/package/generate-collections) [![Build Status](https://img.shields.io/travis/generate/generate-collections.svg?style=flat)](https://travis-ci.org/generate/generate-collections)
 
-> Add the docs, includes, badges, and layouts collections, along with a few generic defaults to your generator.
+Add the docs, includes, badges, and layouts collections, along with a few generic defaults to your generator.
 
-You might also be interested in [generate-defaults](https://github.com/jonschlinkert/generate-defaults).
+You might also be interested in [generate-file](https://github.com/generate/generate-file).
 
 ## Install
 
 Install as a `devDependency` with [npm](https://www.npmjs.com/):
 
 ```sh
-$ npm install generate-collections --save-dev
+$ npm install --save-dev generate-collections
 ```
 
 ## Usage
 
-This plugin can be used with:
-
-* [generate](https://github.com/generate/generate): in your local `generator.js` file or globally installed [generate](https://github.com/generate/generate) generator.
-* [assemble](https://github.com/assemble/assemble): in your local `assemblefile.js` file or globally installed [assemble](https://github.com/assemble/assemble) generator.
-* [update](https://github.com/update/update): in your local `updatefile.js` file or globally installed [update](https://github.com/update/update) generator.
-* [verb](https://github.com/verbose/verb): in your local `verbfile.js` file or globally installed [verb](https://github.com/verbose/verb) generator.
-
-**generator example**
+Use as a plugin, to initialize commonly used [view collections](#collections-created) (no views are actually added to the collections).
 
 ```js
-module.exports = function(argument) {
+module.exports = function(app) {
   app.use(require('generate-collections'));
-  // do stuff with collections
+  // do other generator stuff
 };
 ```
 
-**verbfile.js example**
+## Collections created
 
-```js
-var verb = require('verb');
-var app = verb();
+Adds the following view collections to your generator:
 
-// register the plugin
-app.use(require('generate-collections'));
-```
+### Renderable
 
-## Included collections
-
-Adds the following view collections to your verb app:
-
-**Renderable**
-
-Templates in these collections can be (automatically) rendered:
+Templates for files intended to be written to the file system.
 
 * `files`
 
-**Layouts**
+**Example usage**
 
-Templates in these collections can be used as layouts:
+```js
+app.files('templates/*.md');
+```
+
+### Layouts
+
+Templates to be used as layouts (for "wrapping" other templates or content):
 
 * `layouts`
 
-**Partials**
+```js
+app.layouts('templates/layouts/*.md');
+```
 
-Templates in these collections can be used as partials:
+### Partials
+
+Templates to be used as partials (for injecting into other templates)
 
 * `includes`
 * `badges`
 * `docs`
 
+```js
+app.partials('templates/partials/*.md');
+```
+
+## Smart plugin
+
+This generator follows [base](https://github.com/node-base/base) "smart plugin" conventions, so it can be used as a plugin with any of the following libraries:
+
+* [generate](https://github.com/generate/generate): in your local `generator.js` file or globally installed `generate` generator.
+* [assemble](https://github.com/assemble/assemble): in your local `assemblefile.js` file or globally installed `assemble` generator.
+* [update](https://github.com/update/update): in your local `updatefile.js` file or globally installed `update` generator.
+* [verb](https://github.com/verbose/verb): in your local `verbfile.js` file or globally installed `verb` generator.
+
 ## Related projects
 
 You might also be interested in these projects:
 
-* [assemble](https://www.npmjs.com/package/assemble): Assemble is a powerful, extendable and easy to use static site generator for node.js. Used… [more](https://www.npmjs.com/package/assemble) | [homepage](https://github.com/assemble/assemble)
-* [generate](https://www.npmjs.com/package/generate): Fast, composable, highly extendable project generator with a user-friendly and expressive API. | [homepage](https://github.com/generate/generate)
-* [verb](https://www.npmjs.com/package/verb): Documentation generator for GitHub projects. Verb is extremely powerful, easy to use, and is used… [more](https://www.npmjs.com/package/verb) | [homepage](https://github.com/verbose/verb)
+* [generate-license](https://www.npmjs.com/package/generate-license): Generate a license file for a GitHub project. | [homepage](https://github.com/generate/generate-license "Generate a license file for a GitHub project.")
+* [generate-mocha](https://www.npmjs.com/package/generate-mocha): Generate mocha test files. | [homepage](https://github.com/generate/generate-mocha "Generate mocha test files.")
+* [generate-node](https://www.npmjs.com/package/generate-node): Generate a node.js project, with everything you need to begin writing code and easily publish… [more](https://github.com/generate/generate-node) | [homepage](https://github.com/generate/generate-node "Generate a node.js project, with everything you need to begin writing code and easily publish the project to npm.")
 
 ## Contributing
 
-Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](https://github.com/jonschlinkert/generate-collections/issues/new).
+This document was generated by [verb-readme-generator](https://github.com/verbose/verb-readme-generator) (a [verb](https://github.com/verbose/verb) generator), please don't edit directly. Any changes to the readme must be made in [.verb.md](.verb.md). See [Building Docs](#building-docs).
+
+Pull requests and stars are always welcome. For bugs and feature requests, [please create an issue](../../issues/new). Or visit the [verb-readme-generator](https://github.com/verbose/verb-readme-generator) project to submit bug reports or pull requests for the readme layout template.
 
 ## Building docs
 
 Generate readme and API documentation with [verb](https://github.com/verbose/verb):
 
 ```sh
-$ npm install verb && npm run docs
-```
-
-Or, if [verb](https://github.com/verbose/verb) is installed globally:
-
-```sh
-$ verb
+$ npm install -g verb verb-readme-generator && verb
 ```
 
 ## Running tests
@@ -108,8 +110,8 @@ $ npm install -d && npm test
 ## License
 
 Copyright © 2016, [Jon Schlinkert](https://github.com/jonschlinkert).
-Released under the [MIT license](https://github.com/jonschlinkert/generate-collections/blob/master/LICENSE).
+Released under the [MIT license](https://github.com/generate/generate-collections/blob/master/LICENSE).
 
 ***
 
-_This file was generated by [verb](https://github.com/verbose/verb), v, on March 29, 2016._
+_This file was generated by [verb](https://github.com/verbose/verb), v0.9.0, on June 21, 2016._
