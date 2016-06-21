@@ -82,7 +82,10 @@ function collections(config) {
         if (utils.exists(userDefined) && !view.userDefined === false) {
           view.contents = fs.readFileSync(userDefined);
         }
-        utils.renameFile(app)(view, next);
+
+        // strip prefixes from dotfile and config templates
+        utils.stripPrefixes(view);
+        next();
       });
     });
 

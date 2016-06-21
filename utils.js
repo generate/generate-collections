@@ -23,10 +23,6 @@ utils.renameFile = function(app) {
     file.base = dest;
     file.cwd = dest;
 
-    // strip prefixes from dotfile and config templates
-    file.basename = file.basename.replace(/^_/, '.');
-    file.basename = file.basename.replace(/^\$/, '');
-
     var data = utils.extend({}, file.data);
     if (utils.isObject(data.rename)) {
       for (var key in data.rename) {
@@ -35,9 +31,20 @@ utils.renameFile = function(app) {
         }
       }
     }
+
+    utils.stripPrefixes(file);
     file.path = path.join(file.base, file.basename);
     next();
   };
+};
+
+/**
+ * strip prefixes from dotfile and config templates
+ */
+
+utils.stripPrefixes = function(file) {
+  file.basename = file.basename.replace(/^_/, '.');
+  file.basename = file.basename.replace(/^\$/, '');
 };
 
 /**
