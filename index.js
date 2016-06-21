@@ -1,17 +1,20 @@
 'use strict';
 
-var falsey = require('falsey');
-var isValid = require('is-valid-app');
-var isObject = require('isobject');
+var fs = require('fs');
+var os = require('os');
+var path = require('path');
+var utils = require('./utils');
 
 /**
  * Register the plugin.
  *
  * ```js
- * var collections = require('generate-collections');
- *
  * // in your generator
- * this.use(collections());
+ * this.use(require('generate-collections'));
+ *
+ * // or, to customize options
+ * var collections = require('generate-collections');
+ * this.use(collections.create([options]));
  * ```
  * @api public
  */
@@ -20,25 +23,35 @@ function collections(config) {
   config = config || {};
 
   return function plugin(app, base) {
-    if (!isValid(app, 'generate-collections')) return;
+    if (!utils.isValid(app, 'generate-collections')) return;
+    app.define('home', path.resolve.bind(path, os.homedir()));
 
     /**
      * Options
      */
 
-    this.option(base.options);
-    this.option(config);
+    app.option(config);
+
+    // add default view collections
+    if (!app.files) app.create('files', { viewType: 'renderable'});
+    if (!app.includes) app.create('includes', { viewType: 'partial' });
+    if (!app.layouts) app.create('layouts', { viewType: 'layout' });
+
+    // generator-specific collections
+    if (app.isGenerator && !app.templates) {
+      app.create('templates', { viewType: 'renderable' });
+    }
 
     /**
      * Middleware for collections created by this generator
      */
 
-    this.preLayout(/\.md/, function(view, next) {
-      if (falsey(view.layout) && !view.isType('partial')) {
+    app.preLayout(/./, function(view, next) {
+      if (utils.falsey(view.layout) && !view.isType('partial')) {
         // use the empty layout created above, to ensure that all
         // pre-and post-layout middleware are still triggered
         view.layout = app.resolveLayout(view);
-        if (falsey(view.layout)) {
+        if (utils.falsey(view.layout)) {
           view.layout = 'empty';
         }
         next();
@@ -56,26 +69,33 @@ function collections(config) {
       next();
     });
 
-    // add default view collections
-    this.create('files', { viewType: 'renderable'});
-    this.create('includes', { viewType: 'partial' });
-    this.create('layouts', { viewType: 'layout' });
-
-    // generator-specific collections
-    if (this.isGenerator) {
-      this.create('templates', { viewType: 'renderable' });
-    }
+    // remove or rename template prefixes before writing files to the file system
+    var regex = app.options.templatePathRegex || /./;
+    app.templates.preWrite(regex, utils.renameFile(app));
+    app.templates.onLoad(regex, function(view, next) {
+      utils.parser.parse(view, function(err) {
+        if (err) {
+          next(err);
+          return;
+        }
+        var userDefined = app.home('templates', view.basename);
+        if (utils.exists(userDefined) && !view.userDefined === false) {
+          view.contents = fs.readFileSync(userDefined);
+        }
+        utils.renameFile(app)(view, next);
+      });
+    });
 
     // "noop" layout
-    this.layout('empty', {content: '{% body %}'});
+    app.layout('empty', {content: '{% body %}'});
 
     // create collections defined on the options
-    if (isObject(this.options.create)) {
-      for (var key in this.options.create) {
-        if (!this[key]) {
-          this.create(key, this.options.create[key]);
+    if (utils.isObject(app.options.create)) {
+      for (var key in app.options.create) {
+        if (!app[key]) {
+          app.create(key, app.options.create[key]);
         } else {
-          this[key].option(this.options.create[key]);
+          app[key].option(app.options.create[key]);
         }
       }
     }

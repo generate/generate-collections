@@ -1,10 +1,13 @@
 'use strict';
 
 require('mocha');
+var path = require('path');
 var assert = require('assert');
-var collections = require('./');
 var generate = require('generate');
+var collections = require('..');
 var app;
+
+var fixtures = path.resolve.bind(path, __dirname, 'fixtures');
 
 describe('generate-collections', function() {
   beforeEach(function() {
@@ -108,6 +111,14 @@ describe('generate-collections', function() {
 
       assert.equal(count, 1);
       cb();
+    });
+  });
+
+  describe('renaming', function() {
+    it('should rename templates `onLoad`', function() {
+      app.use(collections);
+      var dotfile = app.template('_dotfile', {cwd: fixtures()});
+      assert.equal(dotfile.basename, '.dotfile');
     });
   });
 

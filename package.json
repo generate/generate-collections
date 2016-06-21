@@ -1,7 +1,7 @@
 {
   "name": "generate-collections",
   "description": "Add the docs, includes, badges, and layouts collections, along with a few generic defaults to your generator.",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "homepage": "https://github.com/generate/generate-collections",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "generate/generate-collections",
@@ -10,7 +10,8 @@
   },
   "license": "MIT",
   "files": [
-    "index.js"
+    "index.js",
+    "utils.js"
   ],
   "main": "index.js",
   "engines": {
@@ -21,18 +22,21 @@
   },
   "dependencies": {
     "falsey": "^0.3.0",
+    "fs-exists-sync": "^0.1.0",
     "is-valid-app": "^0.1.1",
-    "isobject": "^2.0.0"
+    "isobject": "^2.0.0",
+    "lazy-cache": "^2.0.1",
+    "parser-front-matter": "^1.3.0"
   },
   "devDependencies": {
     "engine-base": "^0.1.2",
-    "generate": "^0.4.14",
+    "generate": "^0.7.3",
     "gulp": "^3.9.1",
     "gulp-eslint": "^2.0.0",
-    "gulp-format-md": "^0.1.7",
-    "gulp-istanbul": "^0.10.3",
+    "gulp-format-md": "^0.1.9",
+    "gulp-istanbul": "^1.0.0",
     "gulp-mocha": "^2.2.0",
-    "mocha": "^2.4.5"
+    "mocha": "^2.5.3"
   },
   "keywords": [
     "collections",
