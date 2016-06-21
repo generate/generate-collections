@@ -1,7 +1,7 @@
 {
   "name": "generate-collections",
   "description": "Add the docs, includes, badges, and layouts collections, along with a few generic defaults to your generator.",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "homepage": "https://github.com/generate/generate-collections",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "generate/generate-collections",
@@ -21,6 +21,7 @@
     "test": "mocha"
   },
   "dependencies": {
+    "extend-shallow": "^2.0.1",
     "falsey": "^0.3.0",
     "fs-exists-sync": "^0.1.0",
     "is-valid-app": "^0.1.1",
@@ -70,12 +71,12 @@
     },
     "reflinks": [
       "assemble",
+      "base",
       "common-middleware",
       "generate",
       "update",
       "verb",
-      "verb-readme-generator",
-      "base"
+      "verb-readme-generator"
     ],
     "lint": {
       "reflinks": true
