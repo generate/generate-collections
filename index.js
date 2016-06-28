@@ -36,11 +36,7 @@ function collections(config) {
     if (!app.files) app.create('files', { viewType: 'renderable'});
     if (!app.includes) app.create('includes', { viewType: 'partial' });
     if (!app.layouts) app.create('layouts', { viewType: 'layout' });
-
-    // generator-specific collections
-    if (app.isGenerator && !app.templates) {
-      app.create('templates', { viewType: 'renderable' });
-    }
+    if (!app.templates) app.create('templates', { viewType: 'renderable' });
 
     /**
      * Middleware for collections created by this generator
