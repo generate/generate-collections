@@ -1,7 +1,7 @@
 {
   "name": "generate-collections",
   "description": "Initializes a handful of (empty) template collections to your generator, such as docs, includes, badges, and layouts, along with a few generic defaults.",
-  "version": "0.3.7",
+  "version": "0.3.9",
   "homepage": "https://github.com/generate/generate-collections",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "generate/generate-collections",
