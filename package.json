@@ -1,6 +1,6 @@
 {
   "name": "generate-collections",
-  "description": "Add the docs, includes, badges, and layouts collections, along with a few generic defaults to your generator.",
+  "description": "Initializes a handful of (empty) template collections to your generator, such as docs, includes, badges, and layouts, along with a few generic defaults.",
   "version": "0.3.7",
   "homepage": "https://github.com/generate/generate-collections",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
@@ -23,21 +23,20 @@
   "dependencies": {
     "extend-shallow": "^2.0.1",
     "falsey": "^0.3.0",
-    "fs-exists-sync": "^0.1.0",
-    "is-valid-app": "^0.2.1",
+    "is-valid-app": "^0.3.0",
     "isobject": "^3.0.0",
     "lazy-cache": "^2.0.2",
-    "parser-front-matter": "^1.6.2"
+    "parser-front-matter": "^1.6.3"
   },
   "devDependencies": {
-    "engine-base": "^0.1.2",
+    "engine-base": "^0.1.3",
     "generate": "^0.13.1",
     "gulp": "^3.9.1",
     "gulp-eslint": "^3.0.1",
-    "gulp-format-md": "^0.1.11",
+    "gulp-format-md": "^0.1.12",
     "gulp-istanbul": "^1.1.1",
     "gulp-mocha": "^3.0.1",
-    "mocha": "^3.2.0"
+    "mocha": "^3.4.2"
   },
   "keywords": [
     "boilerplate",

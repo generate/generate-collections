@@ -70,7 +70,7 @@ function collections(config) {
     app.templates.preWrite(regex, utils.renameFile(app));
     app.templates.onLoad(regex, function(view, next) {
       var userDefined = app.home('templates', view.basename);
-      if (utils.exists(userDefined)) {
+      if (fs.existsSync(userDefined)) {
         view.contents = fs.readFileSync(userDefined);
       }
       utils.stripPrefixes(view);
